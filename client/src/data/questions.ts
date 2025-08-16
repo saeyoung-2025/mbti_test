@@ -60,7 +60,7 @@ export const questions: Question[] = [
     dimension: "SN",
     options: [
       { text: "현실적이고 실용적인 정보에 집중한다", value: "S" },
-      { text: "�숨어있는 의미나 패턴을 찾으려 한다", value: "N" }
+      { text: "숨어있는 의미나 패턴을 찾으려 한다", value: "N" }
     ]
   },
   {

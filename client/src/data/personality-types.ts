@@ -147,7 +147,7 @@ export const personalityTypes: Record<string, PersonalityType> = {
       "개방적 사고"
     ],
     weaknesses: [
-      "지나친 이상주义",
+      "지나친 이상주의",
       "비판에 대한 예민함",
       "실용성 부족",
       "자기 의심"
