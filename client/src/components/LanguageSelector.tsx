@@ -7,7 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useLanguage, Language } from "@/hooks/useLanguage";
+import { useLanguageContext, Language } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/hooks/useLanguage";
 import { useAnalytics } from "@/hooks/useAnalytics";
 
 const languages = [
@@ -18,7 +19,8 @@ const languages = [
 ];
 
 export function LanguageSelector() {
-  const { language, changeLanguage } = useLanguage();
+  const { language, changeLanguage } = useLanguageContext();
+  const { t } = useLanguage();
   const analytics = useAnalytics();
 
   const handleLanguageChange = (newLanguage: Language) => {
@@ -26,11 +28,7 @@ export function LanguageSelector() {
     analytics.trackLanguageChange(newLanguage);
   };
 
-  // 디버깅용 함수 - localStorage 초기화
-  const resetLanguage = () => {
-    localStorage.removeItem('mbti-language');
-    window.location.reload();
-  };
+
 
   return (
     <div className="flex items-center space-x-2">
@@ -55,15 +53,6 @@ export function LanguageSelector() {
           ))}
         </SelectContent>
       </Select>
-      {/* 디버깅용 리셋 버튼 */}
-      <Button
-        onClick={resetLanguage}
-        variant="outline"
-        size="sm"
-        className="text-xs"
-      >
-        Reset
-      </Button>
     </div>
   );
 }

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useLanguageContext } from '@/contexts/LanguageContext';
 
-export type Language = 'ko' | 'en' | 'ja' | 'zh';
+export type { Language } from '@/contexts/LanguageContext';
 
 interface Translations {
   [key: string]: {
@@ -174,27 +174,10 @@ export const translations: Translations = {
 };
 
 export const useLanguage = () => {
-  const [language, setLanguage] = useState<Language>('ko');
-
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('mbti-language') as Language;
-    if (savedLanguage && ['ko', 'en', 'ja', 'zh'].includes(savedLanguage)) {
-      setLanguage(savedLanguage);
-    }
-  }, []);
-
-  const changeLanguage = (newLanguage: Language) => {
-    console.log('Changing language to:', newLanguage);
-    setLanguage(newLanguage);
-    localStorage.setItem('mbti-language', newLanguage);
-    console.log('Language stored in localStorage:', localStorage.getItem('mbti-language'));
-  };
+  const { language, changeLanguage } = useLanguageContext();
 
   const t = (key: string): string => {
     const result = translations[key]?.[language] || key;
-    if (key === 'header.title') {
-      console.log(`Translation for ${key} in ${language}:`, result);
-    }
     return result;
   };
 
