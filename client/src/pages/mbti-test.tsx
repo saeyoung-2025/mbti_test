@@ -78,13 +78,8 @@ export default function MBTITest() {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
     } else {
-      // Calculate results - localizedQuestions를 원본 questions 형식으로 변환
-      const questionsForCalculation = localizedQuestions.map((q, index) => ({
-        ...questions[index],
-        text: q.text,
-        options: q.options
-      }));
-      const result = calculateMBTI(newAnswers, questionsForCalculation);
+      // Calculate results - 원본 questions 사용
+      const result = calculateMBTI(newAnswers, questions);
       setPersonalityType(result.type);
       setScores(result.scores);
       
@@ -119,6 +114,18 @@ export default function MBTITest() {
   };
 
   const restartTest = () => {
+    setCurrentScreen("welcome");
+    setCurrentQuestion(1);
+    setAnswers({});
+    setSelectedAnswer(null);
+    setPersonalityType("");
+    setScores(null);
+    setTestStartTime(null);
+    setTestCompletionTime(0);
+    analytics.trackTestRestart();
+  };
+
+  const goHome = () => {
     setCurrentScreen("welcome");
     setCurrentQuestion(1);
     setAnswers({});
@@ -300,24 +307,34 @@ export default function MBTITest() {
                 </div>
 
                 {/* Navigation Buttons */}
-                <div className="flex justify-between mt-8">
-                  <Button
-                    onClick={previousQuestion}
-                    disabled={currentQuestion === 1}
-                    variant="ghost"
-                    className="flex items-center space-x-2"
-                    data-testid="button-previous"
-                  >
-                    <ArrowLeft className="w-4 h-4" />
-                    <span>{t('nav.previous')}</span>
-                  </Button>
+                <div className="flex justify-between items-center mt-8">
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      onClick={goHome}
+                      variant="outline"
+                      size="sm"
+                      data-testid="button-home"
+                    >
+                      {t('button.home')}
+                    </Button>
+                    <Button
+                      onClick={previousQuestion}
+                      disabled={currentQuestion === 1}
+                      variant="ghost"
+                      className="flex items-center space-x-2"
+                      data-testid="button-previous"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      <span>{t('nav.previous')}</span>
+                    </Button>
+                  </div>
                   <Button
                     onClick={nextQuestion}
                     disabled={!selectedAnswer}
                     className="bg-primary hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center space-x-2"
                     data-testid="button-next"
                   >
-                    <span>{t('nav.next')}</span>
+                    <span>{currentQuestion === totalQuestions ? t('nav.finish') : t('nav.next')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>
@@ -374,7 +391,7 @@ export default function MBTITest() {
                     className="font-semibold px-6 py-3 rounded-xl flex items-center space-x-2"
                     data-testid="button-restart"
                   >
-                    <span>{t('results.restart')}</span>
+                    <span>{t('button.restart')}</span>
                   </Button>
                 </div>
               </CardContent>
