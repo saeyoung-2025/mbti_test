@@ -156,13 +156,10 @@ export default function MBTITest() {
     }
   };
 
-  const currentQuestionData = useMemo(() => {
-    const data = localizedQuestions[currentQuestion - 1];
-    console.log('Current language:', language);
-    console.log('Current question data:', data);
-    console.log('All localized questions:', localizedQuestions);
-    return data;
-  }, [localizedQuestions, currentQuestion, language]);
+  const currentQuestionData = useMemo(() => 
+    localizedQuestions[currentQuestion - 1], 
+    [localizedQuestions, currentQuestion, language]
+  );
   const personalityInfo = personalityType ? getLocalizedPersonalityType(personalityType, language) || personalityTypes[personalityType] : null;
 
   return (
