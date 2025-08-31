@@ -5,6 +5,8 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { questions } from "@/data/questions";
 import { personalityTypes } from "@/data/personality-types";
+import { multiLanguageQuestions, getLocalizedQuestion } from "@/data/questions-i18n";
+import { getLocalizedPersonalityType } from "@/data/personality-types-i18n";
 import { calculateMBTI } from "@/lib/mbti-calculator";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { ResultsAnalytics } from "@/components/ResultsAnalytics";
@@ -38,20 +40,23 @@ export default function MBTITest() {
   const [scores, setScores] = useState<PersonalityScores | null>(null);
   const [testStartTime, setTestStartTime] = useState<Date | null>(null);
   const [testCompletionTime, setTestCompletionTime] = useState<number>(0);
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const analytics = useAnalytics();
+
+  // 현재 언어에 맞는 질문과 성격 유형 데이터 가져오기
+  const localizedQuestions = multiLanguageQuestions.map(q => getLocalizedQuestion(q, language));
+  const totalQuestions = localizedQuestions.length;
 
   // 페이지 제목 동적 변경 (SEO)
   useEffect(() => {
     const titles = {
       welcome: "무료 MBTI 성격유형 테스트 - 정확한 16가지 성격 분석",
-      question: `MBTI 테스트 진행중 (${currentQuestion}/${questions.length}) - 성격유형 검사`,
+      question: `MBTI 테스트 진행중 (${currentQuestion}/${totalQuestions}) - 성격유형 검사`,
       results: `${personalityType} ${personalityTypes[personalityType]?.title} - MBTI 테스트 결과`
     };
     document.title = titles[currentScreen];
   }, [currentScreen, currentQuestion, personalityType]);
 
-  const totalQuestions = questions.length;
   const progress = (currentQuestion / totalQuestions) * 100;
 
   const startTest = () => {
@@ -73,8 +78,13 @@ export default function MBTITest() {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
     } else {
-      // Calculate results
-      const result = calculateMBTI(newAnswers, questions);
+      // Calculate results - localizedQuestions를 원본 questions 형식으로 변환
+      const questionsForCalculation = localizedQuestions.map((q, index) => ({
+        ...questions[index],
+        text: q.text,
+        options: q.options
+      }));
+      const result = calculateMBTI(newAnswers, questionsForCalculation);
       setPersonalityType(result.type);
       setScores(result.scores);
       
@@ -136,8 +146,8 @@ export default function MBTITest() {
     }
   };
 
-  const currentQuestionData = questions[currentQuestion - 1];
-  const personalityInfo = personalityType ? personalityTypes[personalityType] : null;
+  const currentQuestionData = localizedQuestions[currentQuestion - 1];
+  const personalityInfo = personalityType ? getLocalizedPersonalityType(personalityType, language) || personalityTypes[personalityType] : null;
 
   return (
     <div className="min-h-screen bg-background">
