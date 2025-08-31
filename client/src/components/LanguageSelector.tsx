@@ -26,6 +26,12 @@ export function LanguageSelector() {
     analytics.trackLanguageChange(newLanguage);
   };
 
+  // 디버깅용 함수 - localStorage 초기화
+  const resetLanguage = () => {
+    localStorage.removeItem('mbti-language');
+    window.location.reload();
+  };
+
   return (
     <div className="flex items-center space-x-2">
       <Globe className="w-4 h-4 text-gray-500" />
@@ -49,6 +55,15 @@ export function LanguageSelector() {
           ))}
         </SelectContent>
       </Select>
+      {/* 디버깅용 리셋 버튼 */}
+      <Button
+        onClick={resetLanguage}
+        variant="outline"
+        size="sm"
+        className="text-xs"
+      >
+        Reset
+      </Button>
     </div>
   );
 }

@@ -184,12 +184,18 @@ export const useLanguage = () => {
   }, []);
 
   const changeLanguage = (newLanguage: Language) => {
+    console.log('Changing language to:', newLanguage);
     setLanguage(newLanguage);
     localStorage.setItem('mbti-language', newLanguage);
+    console.log('Language stored in localStorage:', localStorage.getItem('mbti-language'));
   };
 
   const t = (key: string): string => {
-    return translations[key]?.[language] || key;
+    const result = translations[key]?.[language] || key;
+    if (key === 'header.title') {
+      console.log(`Translation for ${key} in ${language}:`, result);
+    }
+    return result;
   };
 
   return {
