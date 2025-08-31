@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -44,7 +44,10 @@ export default function MBTITest() {
   const analytics = useAnalytics();
 
   // 현재 언어에 맞는 질문과 성격 유형 데이터 가져오기
-  const localizedQuestions = multiLanguageQuestions.map(q => getLocalizedQuestion(q, language));
+  const localizedQuestions = useMemo(() => 
+    multiLanguageQuestions.map(q => getLocalizedQuestion(q, language)), 
+    [language]
+  );
   const totalQuestions = localizedQuestions.length;
 
   // 페이지 제목 동적 변경 (SEO)
@@ -122,7 +125,7 @@ export default function MBTITest() {
     setScores(null);
     setTestStartTime(null);
     setTestCompletionTime(0);
-    analytics.trackTestRestart();
+    analytics.trackTestStart();
   };
 
   const goHome = () => {
@@ -153,7 +156,13 @@ export default function MBTITest() {
     }
   };
 
-  const currentQuestionData = localizedQuestions[currentQuestion - 1];
+  const currentQuestionData = useMemo(() => {
+    const data = localizedQuestions[currentQuestion - 1];
+    console.log('Current language:', language);
+    console.log('Current question data:', data);
+    console.log('All localized questions:', localizedQuestions);
+    return data;
+  }, [localizedQuestions, currentQuestion, language]);
   const personalityInfo = personalityType ? getLocalizedPersonalityType(personalityType, language) || personalityTypes[personalityType] : null;
 
   return (
@@ -263,7 +272,7 @@ export default function MBTITest() {
 
                 {/* Answer Options */}
                 <div className="space-y-4">
-                  {currentQuestionData?.options.map((option, index) => {
+                  {currentQuestionData?.options.map((option: any, index: number) => {
                     const value = index === 0 ? "A" : "B";
                     const isSelected = selectedAnswer === value;
                     
