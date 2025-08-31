@@ -173,36 +173,35 @@ export default function MBTITest() {
                   <Brain className="w-12 h-12 text-white" />
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold text-dark mb-4">
-                  성격유형 검사에 오신 것을 환영합니다
+                  {t('welcome.title')}
                 </h2>
                 <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                  {totalQuestions}가지 질문을 통해 당신의 MBTI 성격유형을 알아보세요.<br />
-                  솔직하고 직관적으로 답변해주시면 더 정확한 결과를 얻을 수 있습니다.
+                  {totalQuestions}{t('welcome.description')}
                 </p>
                 <div className="grid md:grid-cols-2 gap-6 text-left mb-8">
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-secondary/20 rounded-full flex items-center justify-center">
                       <Clock className="w-4 h-4 text-secondary" />
                     </div>
-                    <span className="text-gray-700">소요시간: 약 5-7분</span>
+                    <span className="text-gray-700">{t('info.duration')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
                       <BarChart3 className="w-4 h-4 text-primary" />
                     </div>
-                    <span className="text-gray-700">총 {totalQuestions}개 질문</span>
+                    <span className="text-gray-700">{t('info.questions').replace('{count}', totalQuestions.toString())}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-accent/20 rounded-full flex items-center justify-center">
                       <BarChart3 className="w-4 h-4 text-accent" />
                     </div>
-                    <span className="text-gray-700">정확한 성격분석</span>
+                    <span className="text-gray-700">{t('info.accuracy')}</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
                       <Shield className="w-4 h-4 text-purple-600" />
                     </div>
-                    <span className="text-gray-700">개인정보 보호</span>
+                    <span className="text-gray-700">{t('info.privacy')}</span>
                   </div>
                 </div>
                 <Button
@@ -210,7 +209,7 @@ export default function MBTITest() {
                   className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
                   data-testid="button-start-test"
                 >
-                  테스트 시작하기
+                  {t('welcome.start')}
                 </Button>
               </CardContent>
             </Card>
@@ -224,7 +223,7 @@ export default function MBTITest() {
             <Card className="p-6">
               <CardContent className="pt-0">
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm font-medium text-gray-600">진행률</span>
+                  <span className="text-sm font-medium text-gray-600">{t('progress.title')}</span>
                   <span className="text-sm font-medium text-primary">
                     {currentQuestion} / {totalQuestions}
                   </span>
@@ -238,7 +237,7 @@ export default function MBTITest() {
               <CardContent className="pt-0">
                 <div className="text-center mb-8">
                   <Badge variant="secondary" className="mb-4">
-                    질문 {currentQuestion}
+                    {t('question.label')} {currentQuestion}
                   </Badge>
                   <h3 className="text-xl md:text-2xl font-bold text-dark leading-relaxed">
                     {currentQuestionData?.text}
@@ -300,7 +299,7 @@ export default function MBTITest() {
                     data-testid="button-previous"
                   >
                     <ArrowLeft className="w-4 h-4" />
-                    <span>이전</span>
+                    <span>{t('nav.previous')}</span>
                   </Button>
                   <Button
                     onClick={nextQuestion}
@@ -308,7 +307,7 @@ export default function MBTITest() {
                     className="bg-primary hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center space-x-2"
                     data-testid="button-next"
                   >
-                    <span>다음</span>
+                    <span>{t('nav.next')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </Button>
                 </div>

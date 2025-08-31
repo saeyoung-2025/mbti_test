@@ -34,10 +34,10 @@ export const translations: Translations = {
     zh: '欢迎参加性格类型测试'
   },
   'welcome.description': {
-    ko: '가지 질문을 통해 당신의 MBTI 성격유형을 알아보세요.\n솔직하고 직관적으로 답변해주시면 더 정확한 결과를 얻을 수 있습니다.',
-    en: 'Discover your MBTI personality type through questions.\nAnswer honestly and intuitively for more accurate results.',
-    ja: 'つの質問を通してあなたのMBTI性格タイプを調べてみてください。\n正直かつ直感的に答えてください。',
-    zh: '通过道题了解您的MBTI性格类型。\n请诚实而直觉地回答以获得更准确的结果。'
+    ko: '가지 질문을 통해 당신의 MBTI 성격유형을 알아보세요. 솔직하고 직관적으로 답변해주시면 더 정확한 결과를 얻을 수 있습니다.',
+    en: ' questions to discover your MBTI personality type. Answer honestly and intuitively for more accurate results.',
+    ja: 'つの質問を通してあなたのMBTI性格タイプを調べてみてください。正直かつ直感的に答えてください。',
+    zh: '道题了解您的MBTI性格类型。请诚实而直觉地回答以获得更准确的结果。'
   },
   'welcome.start': {
     ko: '테스트 시작하기',
@@ -130,6 +130,32 @@ export const translations: Translations = {
     en: '中文',
     ja: '中国語',
     zh: '中文'
+  },
+
+  // Additional info texts
+  'info.duration': {
+    ko: '소요시간: 약 5-7분',
+    en: 'Duration: About 5-7 minutes',
+    ja: '所要時間：約5-7分',
+    zh: '所需时间：约5-7分钟'
+  },
+  'info.questions': {
+    ko: '총 {count}개 질문',
+    en: 'Total {count} questions',
+    ja: '合計{count}つの質問',
+    zh: '总共{count}道题'
+  },
+  'info.accuracy': {
+    ko: '정확한 성격분석',
+    en: 'Accurate personality analysis',
+    ja: '正確な性格分析',
+    zh: '准确的性格分析'
+  },
+  'info.privacy': {
+    ko: '개인정보 보호',
+    en: 'Privacy protected',
+    ja: 'プライバシー保護',
+    zh: '隐私保护'
   }
 };
 
