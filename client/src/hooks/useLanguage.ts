@@ -34,7 +34,7 @@ export const translations: Translations = {
     zh: '欢迎参加性格类型测试'
   },
   'welcome.description': {
-    ko: '20가지 질문을 통해 당신의 MBTI 성격유형을 알아보세요. 솔직하고 직관적으로 답변해주시면 더 정확한 결과를 얻을 수 있습니다.',
+    ko: '스무 가지 질문을 통해 당신의 MBTI 성격유형을 알아보세요. 솔직하고 직관적으로 답변해주시면 더 정확한 결과를 얻을 수 있습니다.',
     en: '20 questions to discover your MBTI personality type. Answer honestly and intuitively for more accurate results.',
     ja: '20つの質問を通してあなたのMBTI性格タイプを調べてみてください。正直かつ直感的に答えてください。',
     zh: '20道题了解您的MBTI性格类型。请诚实而直觉地回答以获得更准确的结果。'
