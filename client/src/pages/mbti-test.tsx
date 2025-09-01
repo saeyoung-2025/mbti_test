@@ -199,7 +199,7 @@ export default function MBTITest() {
                   {t('welcome.title')}
                 </h2>
                 <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                  스무 가지 질문을 통해 당신의 MBTI 성격유형을 알아보세요. 솔직하고 직관적으로 답변해주시면 더 정확한 결과를 얻을 수 있습니다.
+                  {t('welcome.description')}
                 </p>
                 <div className="grid md:grid-cols-2 gap-6 text-left mb-8">
                   <div className="flex items-center space-x-3">
