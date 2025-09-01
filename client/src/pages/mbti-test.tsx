@@ -199,7 +199,7 @@ export default function MBTITest() {
                   {t('welcome.title')}
                 </h2>
                 <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                  {totalQuestions}{t('welcome.description')}
+                  {t('welcome.description')}
                 </p>
                 <div className="grid md:grid-cols-2 gap-6 text-left mb-8">
                   <div className="flex items-center space-x-3">
