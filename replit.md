@@ -7,6 +7,8 @@ This is a comprehensive full-stack MBTI (Myers-Briggs Type Indicator) personalit
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+User plans to return in one month for Android app development assistance.
+User is interested in monetization through Google AdMob and app store deployment.
 
 ## Recent Changes (August 2025)
 
