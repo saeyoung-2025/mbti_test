@@ -227,6 +227,19 @@ export default function MBTITest() {
                     <span className="text-gray-700">{t('info.privacy')}</span>
                   </div>
                 </div>
+
+                {/* Source and Credibility Section */}
+                <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">{t('source.title')}</h3>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <p>• {t('source.mbti')}</p>
+                    <p>• {t('source.jung')}</p>
+                    <p>• {t('source.foundation')}</p>
+                  </div>
+                  <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+                    <p className="text-sm text-blue-800">{t('source.disclaimer')}</p>
+                  </div>
+                </div>
                 <Button
                   onClick={startTest}
                   className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
@@ -556,7 +569,18 @@ export default function MBTITest() {
               <p>MBTI 테스트 | 성격유형검사 | 심리테스트 | 16personalities | 무료 성격분석 | 직업적성검사</p>
             </div>
             
-            <p className="mb-2">이 테스트는 참고용이며, 전문적인 심리상담을 대체하지 않습니다.</p>
+            {/* Source and Credibility Information */}
+            <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left max-w-2xl mx-auto">
+              <h4 className="text-sm font-semibold text-gray-700 mb-3">{t('source.title')}</h4>
+              <div className="space-y-1 text-xs text-gray-600">
+                <p>• {t('source.mbti')}</p>
+                <p>• {t('source.jung')}</p>
+                <p>• {t('source.foundation')}</p>
+              </div>
+              <div className="mt-3 p-2 bg-blue-50 rounded border-l-2 border-blue-300">
+                <p className="text-xs text-blue-800">{t('source.disclaimer')}</p>
+              </div>
+            </div>
             
             {/* 추가 링크 */}
             <div className="flex justify-center space-x-6 text-sm">

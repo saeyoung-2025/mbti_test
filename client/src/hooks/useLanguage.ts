@@ -170,6 +170,38 @@ export const translations: Translations = {
     en: 'Restart Test',
     ja: 'テスト再開',
     zh: '重新开始'
+  },
+
+  // Source and Credits
+  'source.title': {
+    ko: '참고자료 및 출처',
+    en: 'References & Sources',
+    ja: '参考資料・出典',
+    zh: '参考资料与来源'
+  },
+  'source.mbti': {
+    ko: 'MBTI 이론: 마이어스-브릭스 타입 지표 (Myers-Briggs Type Indicator)',
+    en: 'MBTI Theory: Myers-Briggs Type Indicator',
+    ja: 'MBTI理論：マイヤーズ＝ブリッグス・タイプ指標',
+    zh: 'MBTI理论：迈尔斯-布里格斯类型指标'
+  },
+  'source.jung': {
+    ko: '칼 융의 심리유형론 (Carl Jung\'s Psychological Types)',
+    en: 'Carl Jung\'s Psychological Types Theory',
+    ja: 'カール・ユングの心理学的類型論',
+    zh: '卡尔·荣格的心理类型理论'
+  },
+  'source.foundation': {
+    ko: 'Myers & Briggs Foundation 공식 자료 참조',
+    en: 'Based on Myers & Briggs Foundation materials',
+    ja: 'マイヤーズ&ブリッグス財団公式資料参照',
+    zh: '参考迈尔斯与布里格斯基金会官方资料'
+  },
+  'source.disclaimer': {
+    ko: '본 테스트는 교육 및 자기이해 목적으로 제작되었으며, 전문적인 심리상담을 대체하지 않습니다.',
+    en: 'This test is for educational and self-understanding purposes and does not replace professional psychological counseling.',
+    ja: 'このテストは教育および自己理解の目的で作成されており、専門的な心理カウンセリングの代わりになるものではありません。',
+    zh: '本测试仅用于教育和自我了解目的，不能替代专业心理咨询。'
   }
 };
 
