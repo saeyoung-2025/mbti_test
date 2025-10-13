@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- 배경 -->
+  <rect width="100" height="100" rx="20" fill="#6366f1"/>
+  
+  <!-- MBTI 텍스트 -->
+  <text x="50" y="65" font-family="Arial, sans-serif" font-size="45" font-weight="bold" fill="white" text-anchor="middle">MB</text>
+  
+  <!-- 장식 도트 -->
+  <circle cx="25" cy="25" r="5" fill="#fbbf24"/>
+  <circle cx="75" cy="25" r="5" fill="#fbbf24"/>
+  <circle cx="25" cy="85" r="5" fill="#fbbf24"/>
+  <circle cx="75" cy="85" r="5" fill="#fbbf24"/>
+</svg>
