@@ -2,8 +2,4 @@
   "rootDirectory": "client",
   "buildCommand": "npm run build",
   "outputDirectory": "dist"
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 753adaec7a6ef3a11aecfd026728370aafb188fa
