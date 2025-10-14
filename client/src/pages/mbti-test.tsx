@@ -75,23 +75,6 @@ export default function MBTITest() {
     analytics.trackTestStart();
   };
 
-  const nextQuestion = () => {
-    if (!selectedAnswer) return;
-
-    const newAnswers = { ...answers, [currentQuestion]: selectedAnswer };
-    setAnswers(newAnswers);
-
-    if (currentQuestion < totalQuestions) {
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-    } else {
-      const result = calculateMBTI(newAnswers, questions);
-setPersonalityType(result.type);
-setScores(result.scores);
-
-// 결과를 Supabase에 저장
-await saveResults(result.type, result.scores);
-
 const saveResults = async (type: string, personalityScores: PersonalityScores) => {
   try {
     const result = {
@@ -109,8 +92,22 @@ const saveResults = async (type: string, personalityScores: PersonalityScores) =
   }
 };
 
+  const nextQuestion = async () => {  // ✅ 여기만 수정!
+  if (!selectedAnswer) return;
 
+  const newAnswers = { ...answers, [currentQuestion]: selectedAnswer };
+  setAnswers(newAnswers);
 
+  if (currentQuestion < totalQuestions) {
+    setCurrentQuestion(currentQuestion + 1);
+    setSelectedAnswer(null);
+  } else {
+    const result = calculateMBTI(newAnswers, questions);
+    setPersonalityType(result.type);
+    setScores(result.scores);
+
+    // 결과를 Supabase에 저장
+    await saveResults(result.type, result.scores);  // ✅ 이제 작동!
       
       // Calculate completion time
       if (testStartTime) {
@@ -602,7 +599,7 @@ const saveResults = async (type: string, personalityScores: PersonalityScores) =
                 <p>• {t('source.mbti')}</p>
                 <p>• {t('source.jung')}</p>
                 <p>• {t('source.foundation')}</p>
-              </div>
+              </divconst handleSubmit
               <div className="mt-3 p-2 bg-blue-50 rounded border-l-2 border-blue-300">
                 <p className="text-xs text-blue-800">{t('source.disclaimer')}</p>
               </div>
