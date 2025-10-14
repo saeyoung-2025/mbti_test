@@ -15,6 +15,10 @@ import { SEOJsonLd } from "@/components/SEOJsonLd";
 import { useLanguage } from "@/hooks/useLanguage";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { Brain, Clock, BarChart3, Shield, Star, AlertTriangle, Briefcase, ArrowLeft, ArrowRight, Share, Sparkles, Download, Heart } from "lucide-react";
+import { saveTestResult } from "@/lib/saveResults";
+import { nanoid } from "nanoid";
+
+
 
 type Screen = "welcome" | "question" | "results";
 type Answer = "A" | "B";
@@ -81,10 +85,32 @@ export default function MBTITest() {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
     } else {
-      // Calculate results - 원본 questions 사용
       const result = calculateMBTI(newAnswers, questions);
-      setPersonalityType(result.type);
-      setScores(result.scores);
+setPersonalityType(result.type);
+setScores(result.scores);
+
+// 결과를 Supabase에 저장
+await saveResults(result.type, result.scores);
+
+const saveResults = async (type: string, personalityScores: PersonalityScores) => {
+  try {
+    const result = {
+      sessionId: nanoid(),
+      personalityType: type,
+      scores: personalityScores,
+      answers: answers,
+      completedAt: new Date().toISOString()
+    };
+    
+    await saveTestResult(result);
+    console.log('Results saved successfully!');
+  } catch (error) {
+    console.error('Failed to save results:', error);
+  }
+};
+
+
+
       
       // Calculate completion time
       if (testStartTime) {
