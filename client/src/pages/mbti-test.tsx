@@ -360,6 +360,8 @@ export default function MBTITest() {
   const [scores, setScores] = useState<PersonalityScores | null>(null);
   const [testStartTime, setTestStartTime] = useState<Date | null>(null);
   const [testCompletionTime, setTestCompletionTime] = useState<number>(0);
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
   const { t, language } = useLanguage();
   const analytics = useAnalytics();
 
@@ -737,18 +739,14 @@ export default function MBTITest() {
                 {/* Action Buttons - Top Row */}
                 <div className="flex flex-wrap justify-center gap-3 mb-4">
                   <Button
-                    onClick={() => {
-                      const resultText = `🧠 MBTI 테스트 결과\n\n성격 유형: ${personalityType} - ${personalityInfo.title}\n\n${personalityInfo.description}\n\n주요 강점:\n${personalityInfo.strengths.map(s => `• ${s}`).join('\n')}\n\n개선 포인트:\n${personalityInfo.weaknesses.map(w => `• ${w}`).join('\n')}\n\n추천 직업:\n${personalityInfo.careers.map(c => `• ${c.name}`).join('\n')}`;
-                      navigator.clipboard.writeText(resultText);
-                      alert('결과가 클립보드에 복사되었습니다!');
-                    }}
+                    onClick={() => setShowResultModal(true)}
                     variant="outline"
                     className="font-semibold px-5 py-2.5 rounded-xl"
                   >
-                    📋 결과 복사
+                    📋 결과 분석
                   </Button>
                   <Button
-                    onClick={() => alert('상세 분석 기능 준비 중입니다!')}
+                    onClick={() => setShowDetailModal(true)}
                     variant="outline"
                     className="font-semibold px-5 py-2.5 rounded-xl"
                   >
@@ -776,6 +774,175 @@ export default function MBTITest() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* 결과 분석 모달 */}
+            {showResultModal && personalityInfo && scores && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowResultModal(false)}>
+                <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 relative" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    onClick={() => setShowResultModal(false)}
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
+                  >
+                    ✕
+                  </button>
+                  
+                  <h2 className="text-2xl font-bold text-center mb-6">{personalityType} 결과 분석</h2>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800 mb-2">성격 유형</h3>
+                      <p className="text-gray-700"><strong>{personalityInfo.title}</strong> ({personalityInfo.subtitle})</p>
+                      <p className="text-gray-600 mt-2">{personalityInfo.description}</p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800 mb-3">성격 특성 점수</h3>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="bg-blue-50 p-3 rounded-lg">
+                          <p className="text-sm">외향성: <strong>{scores.E}%</strong></p>
+                          <p className="text-sm">내향성: <strong>{scores.I}%</strong></p>
+                        </div>
+                        <div className="bg-green-50 p-3 rounded-lg">
+                          <p className="text-sm">감각: <strong>{scores.S}%</strong></p>
+                          <p className="text-sm">직관: <strong>{scores.N}%</strong></p>
+                        </div>
+                        <div className="bg-purple-50 p-3 rounded-lg">
+                          <p className="text-sm">사고: <strong>{scores.T}%</strong></p>
+                          <p className="text-sm">감정: <strong>{scores.F}%</strong></p>
+                        </div>
+                        <div className="bg-orange-50 p-3 rounded-lg">
+                          <p className="text-sm">판단: <strong>{scores.J}%</strong></p>
+                          <p className="text-sm">인식: <strong>{scores.P}%</strong></p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800 mb-2">주요 강점</h3>
+                      <ul className="space-y-1">
+                        {personalityInfo.strengths.map((strength, idx) => (
+                          <li key={idx} className="text-gray-700">• {strength}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800 mb-2">개선 포인트</h3>
+                      <ul className="space-y-1">
+                        {personalityInfo.weaknesses.map((weakness, idx) => (
+                          <li key={idx} className="text-gray-700">• {weakness}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800 mb-2">추천 직업</h3>
+                      <div className="grid grid-cols-2 gap-2">
+                        {personalityInfo.careers.map((career, idx) => (
+                          <div key={idx} className="bg-gray-50 p-2 rounded text-center">
+                            <span className="text-xl">{career.icon}</span>
+                            <p className="text-sm">{career.name}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* 상세 분석 모달 */}
+            {showDetailModal && personalityInfo && scores && (
+              <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setShowDetailModal(false)}>
+                <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8 relative" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    onClick={() => setShowDetailModal(false)}
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
+                  >
+                    ✕
+                  </button>
+                  
+                  <h2 className="text-2xl font-bold text-center mb-6">{personalityType} 상세 분석</h2>
+                  
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800 mb-3">성격 특성 점수</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm font-medium">외향성 (E): {scores.E}%</span>
+                            <span className="text-sm font-medium">내향성 (I): {scores.I}%</span>
+                          </div>
+                          <p className="text-xs text-gray-600 mb-2">
+                            {scores.E > scores.I 
+                              ? '다른 사람들과의 상호작용을 통해 에너지를 얻습니다' 
+                              : '혼자만의 시간을 통해 에너지를 충전합니다'}
+                          </p>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="bg-blue-500 h-2 rounded-full" style={{width: `${scores.E > scores.I ? scores.E : scores.I}%`}}></div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm font-medium">감각 (S): {scores.S}%</span>
+                            <span className="text-sm font-medium">직관 (N): {scores.N}%</span>
+                          </div>
+                          <p className="text-xs text-gray-600 mb-2">
+                            {scores.S > scores.N 
+                              ? '현실적이고 구체적인 정보에 집중합니다' 
+                              : '추상적이고 미래 지향적인 가능성을 봅니다'}
+                          </p>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="bg-green-500 h-2 rounded-full" style={{width: `${scores.S > scores.N ? scores.S : scores.N}%`}}></div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm font-medium">사고 (T): {scores.T}%</span>
+                            <span className="text-sm font-medium">감정 (F): {scores.F}%</span>
+                          </div>
+                          <p className="text-xs text-gray-600 mb-2">
+                            {scores.T > scores.F 
+                              ? '논리와 객관성을 바탕으로 결정합니다' 
+                              : '감정과 가치를 중시하여 결정합니다'}
+                          </p>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="bg-purple-500 h-2 rounded-full" style={{width: `${scores.T > scores.F ? scores.T : scores.F}%`}}></div>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm font-medium">판단 (J): {scores.J}%</span>
+                            <span className="text-sm font-medium">인식 (P): {scores.P}%</span>
+                          </div>
+                          <p className="text-xs text-gray-600 mb-2">
+                            {scores.J > scores.P 
+                              ? '계획적이고 체계적인 삶을 선호합니다' 
+                              : '유연하고 즉흥적인 접근을 선호합니다'}
+                          </p>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="bg-orange-500 h-2 rounded-full" style={{width: `${scores.J > scores.P ? scores.J : scores.P}%`}}></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-gray-800 mb-2">개발 제안</h3>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li>• 약점을 보완하기 위해 다른 유형의 사람들과 협력하세요</li>
+                        <li>• 자신의 강점을 활용할 수 있는 환경을 만드세요</li>
+                        <li>• 균형 잡힌 발전을 위해 약한 특성도 의식적으로 연습하세요</li>
+                        <li>• 스트레스 상황에서 자신의 패턴을 인식하고 관리하세요</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Personality Dimensions */}
             <div className="grid md:grid-cols-2 gap-6">
