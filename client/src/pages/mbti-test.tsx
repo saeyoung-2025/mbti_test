@@ -566,9 +566,6 @@ export default function MBTITest() {
                   <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-400">
                     <p className="text-sm text-blue-800">{t('source.disclaimer')}</p>
                   </div>
-                  <div className="mt-4 pt-4 border-t border-gray-200 text-center">
-                    <p className="text-sm text-gray-700">📧 문의: Mina's Lab (saeyoung2016@gmail.com)</p>
-                  </div>
                 </div>
               </CardContent>
             </Card>
