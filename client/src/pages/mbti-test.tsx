@@ -46,7 +46,6 @@ export default function MBTITest() {
   const { t, language } = useLanguage();
   const analytics = useAnalytics();
 
-
   const totalQuestions = localizedQuestions.length;
 
   useEffect(() => {
@@ -470,10 +469,20 @@ export default function MBTITest() {
     };
   };
 
- const currentQuestionData = useMemo(() => 
-    localizedQuestions[currentQuestion - 1], 
-    [currentQuestion]
-);
+  // ✅ 수정된 부분: 언어에 맞는 텍스트 반환
+  const currentQuestionData = useMemo(() => {
+    const question = localizedQuestions[currentQuestion - 1];
+    if (!question) return null;
+    
+    return {
+      text: question.text[language],
+      options: question.options.map(opt => ({
+        text: opt.text[language],
+        value: opt.value
+      }))
+    };
+  }, [currentQuestion, language]);
+
   const personalityInfo = personalityType ? getLocalizedPersonalityType(personalityType, language) || personalityTypes[personalityType] : null;
 
   return (
@@ -566,7 +575,7 @@ export default function MBTITest() {
           </div>
         )}
 
-        {currentScreen === "question" && (
+        {currentScreen === "question" && currentQuestionData && (
           <div className="space-y-6">
             <Card className="p-6">
               <CardContent className="pt-0">
@@ -587,12 +596,12 @@ export default function MBTITest() {
                     {t('question.label')} {currentQuestion}
                   </Badge>
                   <h3 className="text-xl md:text-2xl font-bold text-dark leading-relaxed">
-                    {currentQuestionData?.text}
+                    {currentQuestionData.text}
                   </h3>
                 </div>
 
                 <div className="space-y-4">
-                  {currentQuestionData?.options.map((option: any, index: number) => {
+                  {currentQuestionData.options.map((option: any, index: number) => {
                     const value = index === 0 ? "A" : "B";
                     const isSelected = selectedAnswer === value;
                     
