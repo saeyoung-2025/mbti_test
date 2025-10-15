@@ -1,4 +1,320 @@
-import { useState, useEffect, useMemo } from "react";
+const shareResults = () => {
+    const shareText = `🧠 내 MBTI 결과: ${personalityType} (${personalityTypes[personalityType]?.title})\n\n✨ ${personalityTypes[personalityType]?.description}\n\n📊 완료 시간: ${Math.floor(testCompletionTime / 60)}분 ${testCompletionTime % 60}초\n\n🔗 당신도 테스트해보세요: ${window.location.origin}`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: `내 MBTI 결과: ${personalityType}`,
+        text: shareText,
+        url: window.location.origin,
+      });
+      analytics.trackShare('native', personalityType);
+    } else {
+      navigator.clipboard.writeText(shareText);
+      alert("결과가 클립보드에 복사되었습니다! SNS에 붙여넣어 공유하세요.");
+      analytics.trackShare('clipboard', personalityType);
+    }
+  };
+
+  // 궁합 데이터 함수
+  const getCompatibility = (type: string) => {
+    const compatibilityData: Record<string, any> = {
+      INTJ: {
+        perfect: [
+          { type: 'ENFP', description: '서로 다른 매력이 완벽하게 보완돼요! 외향적 감성과 내향적 논리의 조화' },
+          { type: 'ENTP', description: '지적 호기심을 공유하며 서로를 자극해요' }
+        ],
+        good: [
+          { type: 'INFJ', description: '깊은 대화가 가능한 관계, 비슷한 직관력' },
+          { type: 'ENTJ', description: '비슷한 사고방식으로 서로를 이해해요' }
+        ],
+        challenging: [
+          { type: 'ISFP', description: '감성과 논리의 차이가 있지만 서로 배울 점이 많아요' },
+          { type: 'ESFP', description: '생각하는 방식이 달라서 노력이 필요해요' }
+        ],
+        difficult: [
+          { type: 'ESTP', description: '가치관 차이로 충돌할 수 있어요. 이해와 노력이 필요해요' },
+          { type: 'ESFJ', description: '우선순위가 달라 갈등이 생길 수 있어요' }
+        ]
+      },
+      INTP: {
+        perfect: [
+          { type: 'ENTJ', description: '논리적 사고를 공유하며 서로를 존중해요' },
+          { type: 'ENFJ', description: '서로의 약점을 보완하는 완벽한 조합' }
+        ],
+        good: [
+          { type: 'INTJ', description: '지적 대화가 가능한 깊은 관계' },
+          { type: 'INFJ', description: '사고의 깊이를 이해하는 관계' }
+        ],
+        challenging: [
+          { type: 'ESFP', description: '접근 방식이 달라 조율이 필요해요' },
+          { type: 'ISFJ', description: '표현 방식의 차이를 이해해야 해요' }
+        ],
+        difficult: [
+          { type: 'ESTJ', description: '방식의 차이로 갈등 가능성이 있어요' },
+          { type: 'ESFJ', description: '감정 표현 방식이 달라 어려울 수 있어요' }
+        ]
+      },
+      ENTJ: {
+        perfect: [
+          { type: 'INTP', description: '논리적 사고를 공유하며 최고의 팀워크' },
+          { type: 'INFP', description: '서로 다른 강점이 완벽하게 조화돼요' }
+        ],
+        good: [
+          { type: 'INTJ', description: '목표 지향적인 최강 조합' },
+          { type: 'ENFP', description: '에너지와 비전을 공유해요' }
+        ],
+        challenging: [
+          { type: 'ISFP', description: '속도 차이를 이해하고 조절이 필요해요' },
+          { type: 'INFJ', description: '접근 방식이 달라 타협이 필요해요' }
+        ],
+        difficult: [
+          { type: 'ISFJ', description: '가치관 차이로 갈등 가능' },
+          { type: 'ESFP', description: '우선순위가 달라 충돌할 수 있어요' }
+        ]
+      },
+      ENTP: {
+        perfect: [
+          { type: 'INFJ', description: '깊이와 창의성이 만나는 완벽한 조합' },
+          { type: 'INTJ', description: '지적 자극을 주고받는 관계' }
+        ],
+        good: [
+          { type: 'ENFP', description: '아이디어와 에너지를 공유해요' },
+          { type: 'ENTJ', description: '비전을 함께 실현해요' }
+        ],
+        challenging: [
+          { type: 'ISFJ', description: '안정과 변화의 균형이 필요해요' },
+          { type: 'ISTJ', description: '접근 방식이 달라 이해가 필요해요' }
+        ],
+        difficult: [
+          { type: 'ESFJ', description: '소통 방식이 달라 갈등 가능' },
+          { type: 'ISFP', description: '템포가 달라 조율이 어려워요' }
+        ]
+      },
+      INFJ: {
+        perfect: [
+          { type: 'ENTP', description: '깊이와 창의성의 완벽한 조화' },
+          { type: 'ENFP', description: '이상과 열정을 공유하는 관계' }
+        ],
+        good: [
+          { type: 'INTJ', description: '비슷한 직관력으로 서로 이해해요' },
+          { type: 'INFP', description: '감성을 공유하는 깊은 관계' }
+        ],
+        challenging: [
+          { type: 'ESTP', description: '접근 방식이 달라 노력이 필요해요' },
+          { type: 'ESTJ', description: '가치관을 존중하는 자세가 필요해요' }
+        ],
+        difficult: [
+          { type: 'ISTP', description: '소통 방식이 많이 달라요' },
+          { type: 'ESFP', description: '우선순위가 달라 갈등 가능' }
+        ]
+      },
+      INFP: {
+        perfect: [
+          { type: 'ENTJ', description: '서로의 약점을 보완하는 최고의 조합' },
+          { type: 'ENFJ', description: '이상과 감성을 함께 나눠요' }
+        ],
+        good: [
+          { type: 'INFJ', description: '깊은 감성을 이해하는 관계' },
+          { type: 'ENFP', description: '열정과 이상을 공유해요' }
+        ],
+        challenging: [
+          { type: 'ESTJ', description: '방식이 달라 이해와 타협이 필요해요' },
+          { type: 'ISTJ', description: '접근 방식을 존중해야 해요' }
+        ],
+        difficult: [
+          { type: 'ESTP', description: '가치관이 많이 달라요' },
+          { type: 'ESFJ', description: '표현 방식이 달라 갈등 가능' }
+        ]
+      },
+      ENFJ: {
+        perfect: [
+          { type: 'INFP', description: '이상과 감성의 완벽한 조화' },
+          { type: 'ISFP', description: '서로를 이해하고 존중하는 관계' }
+        ],
+        good: [
+          { type: 'ENFP', description: '에너지와 열정을 공유해요' },
+          { type: 'INFJ', description: '비전을 함께 실현해요' }
+        ],
+        challenging: [
+          { type: 'ISTP', description: '표현 방식이 달라 조율이 필요해요' },
+          { type: 'INTP', description: '접근 방식을 이해해야 해요' }
+        ],
+        difficult: [
+          { type: 'ISTJ', description: '우선순위가 달라 갈등 가능' },
+          { type: 'ESTJ', description: '방식이 달라 충돌할 수 있어요' }
+        ]
+      },
+      ENFP: {
+        perfect: [
+          { type: 'INTJ', description: '서로 다른 매력이 완벽하게 보완돼요' },
+          { type: 'INFJ', description: '이상과 열정을 공유하는 관계' }
+        ],
+        good: [
+          { type: 'ENFJ', description: '에너지를 함께 나누는 활기찬 관계' },
+          { type: 'ENTP', description: '창의력을 발휘하는 조합' }
+        ],
+        challenging: [
+          { type: 'ISTJ', description: '속도를 맞추는 노력이 필요해요' },
+          { type: 'ISFJ', description: '접근 방식이 달라 이해가 필요해요' }
+        ],
+        difficult: [
+          { type: 'ESTJ', description: '방식이 많이 달라요' },
+          { type: 'ISTP', description: '템포 차이로 갈등 가능' }
+        ]
+      },
+      ISTJ: {
+        perfect: [
+          { type: 'ESFP', description: '안정과 활력의 완벽한 균형' },
+          { type: 'ESTP', description: '서로를 보완하는 실용적 조합' }
+        ],
+        good: [
+          { type: 'ISFJ', description: '책임감을 공유하는 안정적 관계' },
+          { type: 'ESTJ', description: '목표를 함께 달성해요' }
+        ],
+        challenging: [
+          { type: 'ENFP', description: '자유와 규칙의 균형이 필요해요' },
+          { type: 'ENTP', description: '접근 방식이 달라 조율이 필요해요' }
+        ],
+        difficult: [
+          { type: 'INFP', description: '가치관이 많이 달라요' },
+          { type: 'ENFJ', description: '우선순위 차이로 갈등 가능' }
+        ]
+      },
+      ISFJ: {
+        perfect: [
+          { type: 'ESFP', description: '돌봄과 즐거움의 완벽한 조화' },
+          { type: 'ESTP', description: '안정과 활력을 주고받아요' }
+        ],
+        good: [
+          { type: 'ISTJ', description: '책임감을 나누는 든든한 관계' },
+          { type: 'ESFJ', description: '서로를 배려하는 따뜻한 관계' }
+        ],
+        challenging: [
+          { type: 'ENTP', description: '변화와 안정의 균형이 필요해요' },
+          { type: 'ENFP', description: '속도를 맞추는 노력이 필요해요' }
+        ],
+        difficult: [
+          { type: 'INTJ', description: '접근 방식이 많이 달라요' },
+          { type: 'INTP', description: '소통 방식이 달라 어려워요' }
+        ]
+      },
+      ESTJ: {
+        perfect: [
+          { type: 'ISFP', description: '실행력과 감성의 조화' },
+          { type: 'ISTP', description: '효율성을 추구하는 실용적 조합' }
+        ],
+        good: [
+          { type: 'ISTJ', description: '목표를 함께 달성하는 관계' },
+          { type: 'ENTJ', description: '리더십을 발휘하는 강력한 조합' }
+        ],
+        challenging: [
+          { type: 'INFP', description: '방식을 존중하는 노력이 필요해요' },
+          { type: 'ENFP', description: '접근 방식이 달라 이해가 필요해요' }
+        ],
+        difficult: [
+          { type: 'INTP', description: '우선순위가 많이 달라요' },
+          { type: 'INFJ', description: '가치관 차이로 갈등 가능' }
+        ]
+      },
+      ESFJ: {
+        perfect: [
+          { type: 'ISFP', description: '돌봄과 창의성의 조화' },
+          { type: 'ISTP', description: '서로를 보완하는 균형있는 관계' }
+        ],
+        good: [
+          { type: 'ISFJ', description: '따뜻함을 나누는 안정적 관계' },
+          { type: 'ESFP', description: '활기찬 에너지를 공유해요' }
+        ],
+        challenging: [
+          { type: 'INTP', description: '표현 방식이 달라 조율이 필요해요' },
+          { type: 'ENTP', description: '접근 방식을 이해해야 해요' }
+        ],
+        difficult: [
+          { type: 'INTJ', description: '우선순위가 많이 달라요' },
+          { type: 'INFP', description: '소통 방식이 달라 어려워요' }
+        ]
+      },
+      ISTP: {
+        perfect: [
+          { type: 'ESFJ', description: '실용성과 돌봄의 완벽한 조화' },
+          { type: 'ESTJ', description: '효율성을 추구하는 실용적 조합' }
+        ],
+        good: [
+          { type: 'ESTP', description: '자유와 행동을 공유하는 관계' },
+          { type: 'ISFP', description: '현실적 감각을 나눠요' }
+        ],
+        challenging: [
+          { type: 'ENFJ', description: '표현 방식이 달라 노력이 필요해요' },
+          { type: 'ENFP', description: '템포를 맞추는 조율이 필요해요' }
+        ],
+        difficult: [
+          { type: 'INFJ', description: '접근 방식이 많이 달라요' },
+          { type: 'ENTJ', description: '우선순위 차이로 갈등 가능' }
+        ]
+      },
+      ISFP: {
+        perfect: [
+          { type: 'ENFJ', description: '이해와 배려가 넘치는 완벽한 조화' },
+          { type: 'ESFJ', description: '따뜻함과 창의성을 나눠요' }
+        ],
+        good: [
+          { type: 'ESFP', description: '자유로움을 함께 즐기는 관계' },
+          { type: 'ISTP', description: '현실적 감각을 공유해요' }
+        ],
+        challenging: [
+          { type: 'ENTJ', description: '속도를 맞추는 노력이 필요해요' },
+          { type: 'INTJ', description: '접근 방식이 달라 이해가 필요해요' }
+        ],
+        difficult: [
+          { type: 'ENTP', description: '템포가 많이 달라요' },
+          { type: 'ESTJ', description: '가치관 차이로 갈등 가능' }
+        ]
+      },
+      ESTP: {
+        perfect: [
+          { type: 'ISFJ', description: '활력과 안정의 완벽한 균형' },
+          { type: 'ISTJ', description: '실행력을 발휘하는 실용적 조합' }
+        ],
+        good: [
+          { type: 'ESFP', description: '에너지를 함께 발산하는 관계' },
+          { type: 'ISTP', description: '행동력을 공유해요' }
+        ],
+        challenging: [
+          { type: 'INFJ', description: '접근 방식이 달라 노력이 필요해요' },
+          { type: 'INFP', description: '가치관을 이해하는 노력이 필요해요' }
+        ],
+        difficult: [
+          { type: 'INTJ', description: '우선순위가 많이 달라요' },
+          { type: 'INTP', description: '소통 방식이 달라 어려워요' }
+        ]
+      },
+      ESFP: {
+        perfect: [
+          { type: 'ISTJ', description: '즐거움과 안정의 완벽한 조화' },
+          { type: 'ISFJ', description: '활력과 돌봄을 나눠요' }
+        ],
+        good: [
+          { type: 'ESTP', description: '함께 즐기는 활기찬 관계' },
+          { type: 'ESFJ', description: '에너지를 공유하는 따뜻한 관계' }
+        ],
+        challenging: [
+          { type: 'INTJ', description: '속도와 방식을 맞추는 노력이 필요해요' },
+          { type: 'INTP', description: '접근 방식이 달라 이해가 필요해요' }
+        ],
+        difficult: [
+          { type: 'INFJ', description: '우선순위가 많이 달라요' },
+          { type: 'ENTJ', description: '템포 차이로 갈등 가능' }
+        ]
+      }
+    };
+
+    return compatibilityData[type] || {
+      perfect: [],
+      good: [],
+      challenging: [],
+      difficult: []
+    };
+  };import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -418,23 +734,44 @@ export default function MBTITest() {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-wrap justify-center gap-4">
+                {/* Action Buttons - Top Row */}
+                <div className="flex flex-wrap justify-center gap-3 mb-4">
+                  <Button
+                    onClick={() => {
+                      const resultText = `🧠 MBTI 테스트 결과\n\n성격 유형: ${personalityType} - ${personalityInfo.title}\n\n${personalityInfo.description}\n\n주요 강점:\n${personalityInfo.strengths.map(s => `• ${s}`).join('\n')}\n\n개선 포인트:\n${personalityInfo.weaknesses.map(w => `• ${w}`).join('\n')}\n\n추천 직업:\n${personalityInfo.careers.map(c => `• ${c.name}`).join('\n')}`;
+                      navigator.clipboard.writeText(resultText);
+                      alert('결과가 클립보드에 복사되었습니다!');
+                    }}
+                    variant="outline"
+                    className="font-semibold px-5 py-2.5 rounded-xl"
+                  >
+                    📋 결과 복사
+                  </Button>
+                  <Button
+                    onClick={() => alert('상세 분석 기능 준비 중입니다!')}
+                    variant="outline"
+                    className="font-semibold px-5 py-2.5 rounded-xl"
+                  >
+                    📊 상세 분석 보기
+                  </Button>
                   <Button
                     onClick={shareResults}
-                    className="bg-primary hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center space-x-2"
+                    className="bg-primary hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl flex items-center space-x-2"
                     data-testid="button-share"
                   >
                     <Share className="w-4 h-4" />
-                    <span>{t('results.share')}</span>
+                    <span>공유하기</span>
                   </Button>
+                </div>
+
+                {/* Restart Button - Bottom Center */}
+                <div className="flex justify-center">
                   <Button
                     onClick={restartTest}
-                    variant="outline"
-                    className="font-semibold px-6 py-3 rounded-xl flex items-center space-x-2"
+                    className="bg-secondary hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg"
                     data-testid="button-restart"
                   >
-                    <span>{t('button.restart')}</span>
+                    🔄 다시 테스트하기
                   </Button>
                 </div>
               </CardContent>
@@ -563,6 +900,86 @@ export default function MBTITest() {
                       <p className="font-medium text-dark">{career.name}</p>
                     </div>
                   ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Compatibility Section */}
+            <Card className="p-8">
+              <CardContent className="pt-0">
+                <div className="flex items-center mb-6">
+                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+                    <Heart className="w-5 h-5 text-pink-600" />
+                  </div>
+                  <h3 className="text-xl font-bold text-dark">MBTI 궁합</h3>
+                </div>
+                
+                <div className="space-y-6">
+                  {/* 환상의 궁합 */}
+                  <div className="bg-green-50 rounded-lg p-5">
+                    <h4 className="text-lg font-bold text-green-800 mb-3 flex items-center">
+                      💚 환상의 궁합
+                    </h4>
+                    <div className="space-y-3">
+                      {getCompatibility(personalityType).perfect.map((item, idx) => (
+                        <div key={idx} className="bg-white rounded-lg p-3">
+                          <p className="font-bold text-green-700 mb-1">{personalityType} ↔ {item.type}</p>
+                          <p className="text-sm text-gray-700">{item.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 좋은 궁합 */}
+                  <div className="bg-yellow-50 rounded-lg p-5">
+                    <h4 className="text-lg font-bold text-yellow-800 mb-3 flex items-center">
+                      💛 좋은 궁합
+                    </h4>
+                    <div className="space-y-3">
+                      {getCompatibility(personalityType).good.map((item, idx) => (
+                        <div key={idx} className="bg-white rounded-lg p-3">
+                          <p className="font-bold text-yellow-700 mb-1">{personalityType} ↔ {item.type}</p>
+                          <p className="text-sm text-gray-700">{item.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 보완이 필요한 궁합 */}
+                  <div className="bg-orange-50 rounded-lg p-5">
+                    <h4 className="text-lg font-bold text-orange-800 mb-3 flex items-center">
+                      🧡 보완이 필요한 궁합
+                    </h4>
+                    <div className="space-y-3">
+                      {getCompatibility(personalityType).challenging.map((item, idx) => (
+                        <div key={idx} className="bg-white rounded-lg p-3">
+                          <p className="font-bold text-orange-700 mb-1">{personalityType} ↔ {item.type}</p>
+                          <p className="text-sm text-gray-700">{item.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 도전적 궁합 */}
+                  <div className="bg-red-50 rounded-lg p-5">
+                    <h4 className="text-lg font-bold text-red-800 mb-3 flex items-center">
+                      ❤️ 도전적 궁합
+                    </h4>
+                    <div className="space-y-3">
+                      {getCompatibility(personalityType).difficult.map((item, idx) => (
+                        <div key={idx} className="bg-white rounded-lg p-3">
+                          <p className="font-bold text-red-700 mb-1">{personalityType} ↔ {item.type}</p>
+                          <p className="text-sm text-gray-700">{item.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-blue-50 rounded-lg">
+                  <p className="text-sm text-blue-800">
+                    💡 <strong>참고:</strong> 궁합은 참고용일 뿐, 실제 관계는 노력과 이해가 더 중요해요!
+                  </p>
                 </div>
               </CardContent>
             </Card>
