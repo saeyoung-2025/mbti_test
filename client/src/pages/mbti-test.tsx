@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { questions } from "@/data/questions";
 import { personalityTypes } from "@/data/personality-types";
+
 import { localizedQuestions } from "@/data/questions-i18n";
 import { getLocalizedPersonalityType } from "@/data/personality-types-i18n";
 import { calculateMBTI } from "@/lib/mbti-calculator";
@@ -45,10 +46,7 @@ export default function MBTITest() {
   const { t, language } = useLanguage();
   const analytics = useAnalytics();
 
-  const localizedQuestions = useMemo(() => 
-    localizedQuestions.map(q => getLocalizedQuestion(q, language)), 
-    [language]
-  );
+
   const totalQuestions = localizedQuestions.length;
 
   useEffect(() => {
@@ -472,10 +470,10 @@ export default function MBTITest() {
     };
   };
 
-  const currentQuestionData = useMemo(() => 
+ const currentQuestionData = useMemo(() => 
     localizedQuestions[currentQuestion - 1], 
-    [localizedQuestions, currentQuestion, language]
-  );
+    [currentQuestion]
+);
   const personalityInfo = personalityType ? getLocalizedPersonalityType(personalityType, language) || personalityTypes[personalityType] : null;
 
   return (
