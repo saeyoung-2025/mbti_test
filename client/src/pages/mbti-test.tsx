@@ -778,35 +778,18 @@ export default function MBTITest() {
 
             <Card className="p-6">
               <CardContent className="pt-0">
-                <div className="flex flex-wrap justify-center gap-3 mb-4">
-                  <Button
-                    onClick={() => alert('📋 결과 분석\n\n성격 유형: ' + personalityType + '\n' + personalityInfo.title + '\n\n' + personalityInfo.description)}
-                    variant="outline"
-                    className="font-semibold px-5 py-2.5 rounded-xl"
-                  >
-                    📋 결과 분석
-                  </Button>
-                  <Button
-                    onClick={() => alert('📊 상세 분석\n\n각 성격 차원별 점수와 의미를 자세히 설명합니다.\n\n외향성/내향성: ' + (scores.E > scores.I ? scores.E + '%' : scores.I + '%'))}
-                    variant="outline"
-                    className="font-semibold px-5 py-2.5 rounded-xl"
-                  >
-                    📊 상세 분석 보기
-                  </Button>
+                <div className="flex justify-center gap-4">
                   <Button
                     onClick={shareResults}
-                    className="bg-primary hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl flex items-center space-x-2"
+                    className="bg-primary hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-xl flex items-center space-x-2"
                     data-testid="button-share"
                   >
                     <Share className="w-4 h-4" />
                     <span>공유하기</span>
                   </Button>
-                </div>
-
-                <div className="flex justify-center">
                   <Button
                     onClick={restartTest}
-                    className="bg-secondary hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg"
+                    className="bg-secondary hover:bg-green-700 text-white font-bold px-6 py-3 rounded-xl"
                     data-testid="button-restart"
                   >
                     🔄 다시 테스트하기
