@@ -1,4 +1,22 @@
-const shareResults = () => {
+</div>
+                </div>
+                <Button
+                  onClick={startTest}
+                  className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  data-testid="button-start-test"
+                >
+                                  <Button
+                  onClick={startTest}
+                  className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  data-testid="button-start-test"
+                >
+                  {t('welcome.start')}
+                </Button>
+
+                {/* Source and Credibility Section - 시작 버튼 아래로 이동 */}
+                <div className="bg-gray-50 rounded-lg p-6 mt-8 text-left border-2 border-gray-200">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">{t('source.title')}</h3>
+                  <div className="space-y-2  const shareResults = () => {
     const shareText = `🧠 내 MBTI 결과: ${personalityType} (${personalityTypes[personalityType]?.title})\n\n✨ ${personalityTypes[personalityType]?.description}\n\n📊 완료 시간: ${Math.floor(testCompletionTime / 60)}분 ${testCompletionTime % 60}초\n\n🔗 당신도 테스트해보세요: ${window.location.origin}`;
     
     if (navigator.share) {
@@ -360,8 +378,6 @@ export default function MBTITest() {
   const [scores, setScores] = useState<PersonalityScores | null>(null);
   const [testStartTime, setTestStartTime] = useState<Date | null>(null);
   const [testCompletionTime, setTestCompletionTime] = useState<number>(0);
-  const [showResultModal, setShowResultModal] = useState(false);
-  const [showDetailModal, setShowDetailModal] = useState(false);
   const { t, language } = useLanguage();
   const analytics = useAnalytics();
 
@@ -570,8 +586,16 @@ export default function MBTITest() {
                   </div>
                 </div>
 
-                {/* Source and Credibility Section */}
-                <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
+                <Button
+                  onClick={startTest}
+                  className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  data-testid="button-start-test"
+                >
+                  {t('welcome.start')}
+                </Button>
+
+                {/* Source and Credibility Section - 시작 버튼 아래로 이동 */}
+                <div className="bg-gray-50 rounded-lg p-6 mt-8 text-left border-2 border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-800 mb-3">{t('source.title')}</h3>
                   <div className="space-y-2 text-sm text-gray-600">
                     <p>• {t('source.mbti')}</p>
@@ -582,13 +606,6 @@ export default function MBTITest() {
                     <p className="text-sm text-blue-800">{t('source.disclaimer')}</p>
                   </div>
                 </div>
-                <Button
-                  onClick={startTest}
-                  className="bg-primary hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
-                  data-testid="button-start-test"
-                >
-                  {t('welcome.start')}
-                </Button>
               </CardContent>
             </Card>
           </div>
@@ -735,8 +752,245 @@ export default function MBTITest() {
                     <span>정확도: 95%+</span>
                   </div>
                 </div>
+              </CardContent>
+            </Card>
 
-                {/* Action Buttons - Top Row */}
+            {/* Personality Dimensions */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                { 
+                  key: "EI", 
+                  dominant: scores.E > scores.I ? "E" : "I",
+                  dominantLabel: scores.E > scores.I ? "외향성 (E)" : "내향성 (I)",
+                  dominantScore: scores.E > scores.I ? scores.E : scores.I,
+                  recessive: scores.E > scores.I ? "I" : "E",
+                  recessiveLabel: scores.E > scores.I ? "내향성 (I)" : "외향성 (E)",
+                  recessiveScore: scores.E > scores.I ? scores.I : scores.E,
+                  color: "from-primary to-secondary"
+                },
+                {
+                  key: "SN",
+                  dominant: scores.S > scores.N ? "S" : "N", 
+                  dominantLabel: scores.S > scores.N ? "감각 (S)" : "직관 (N)",
+                  dominantScore: scores.S > scores.N ? scores.S : scores.N,
+                  recessive: scores.S > scores.N ? "N" : "S",
+                  recessiveLabel: scores.S > scores.N ? "직관 (N)" : "감각 (S)",
+                  recessiveScore: scores.S > scores.N ? scores.N : scores.S,
+                  color: "from-secondary to-primary"
+                },
+                {
+                  key: "TF",
+                  dominant: scores.T > scores.F ? "T" : "F",
+                  dominantLabel: scores.T > scores.F ? "사고 (T)" : "감정 (F)", 
+                  dominantScore: scores.T > scores.F ? scores.T : scores.F,
+                  recessive: scores.T > scores.F ? "F" : "T",
+                  recessiveLabel: scores.T > scores.F ? "감정 (F)" : "사고 (T)",
+                  recessiveScore: scores.T > scores.F ? scores.F : scores.T,
+                  color: "from-accent to-orange-400"
+                },
+                {
+                  key: "JP",
+                  dominant: scores.J > scores.P ? "J" : "P",
+                  dominantLabel: scores.J > scores.P ? "판단 (J)" : "인식 (P)",
+                  dominantScore: scores.J > scores.P ? scores.J : scores.P,
+                  recessive: scores.J > scores.P ? "P" : "J", 
+                  recessiveLabel: scores.J > scores.P ? "인식 (P)" : "판단 (J)",
+                  recessiveScore: scores.J > scores.P ? scores.P : scores.J,
+                  color: "from-purple-600 to-purple-400"
+                }
+              ].map((dimension) => (
+                <Card key={dimension.key} className="p-6">
+                  <CardContent className="pt-0">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-dark">{dimension.dominantLabel}</h3>
+                      <span className="text-2xl font-bold text-primary">
+                        {Math.round(dimension.dominantScore)}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                      <div
+                        className={`bg-gradient-to-r ${dimension.color} h-3 rounded-full transition-all duration-1000`}
+                        style={{ width: `${dimension.dominantScore}%` }}
+                      />
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      vs {dimension.recessiveLabel} {Math.round(dimension.recessiveScore)}%
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Action Buttons - 주요 강점 바로 위 */}
+            <Card className="p-6">
+              <CardContent className="pt-0">
+                {/* Top Row - 3 Buttons */}
+                <div className="flex flex-wrap justify-center gap-3 mb-4">
+                  <Button
+                    onClick={() => alert('📋 결과 분석\n\n성격 유형, 점수, 강점, 약점, 추천 직업이 포함된 상세 분석입니다.')}
+                    variant="outline"
+                    className="font-semibold px-5 py-2.5 rounded-xl"
+                  >
+                    📋 결과 분석
+                  </Button>
+                  <Button
+                    onClick={() => alert('📊 상세 분석\n\n각 성격 차원별 점수와 의미를 자세히 설명합니다.')}
+                    variant="outline"
+                    className="font-semibold px-5 py-2.5 rounded-xl"
+                  >
+                    📊 상세 분석 보기
+                  </Button>
+                  <Button
+                    onClick={shareResults}
+                    className="bg-primary hover:bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-xl flex items-center space-x-2"
+                    data-testid="button-share"
+                  >
+                    <Share className="w-4 h-4" />
+                    <span>공유하기</span>
+                  </Button>
+                </div>
+
+                {/* Bottom Row - Restart Button */}
+                <div className="flex justify-center">
+                  <Button
+                    onClick={restartTest}
+                    className="bg-secondary hover:bg-green-700 text-white font-bold px-8 py-4 rounded-xl text-lg"
+                    data-testid="button-restart"
+                  >
+                    🔄 다시 테스트하기
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+              {[
+                { 
+                  key: "EI", 
+                  dominant: scores.E > scores.I ? "E" : "I",
+                  dominantLabel: scores.E > scores.I ? "외향성 (E)" : "내향성 (I)",
+                  dominantScore: scores.E > scores.I ? scores.E : scores.I,
+                  recessive: scores.E > scores.I ? "I" : "E",
+                  recessiveLabel: scores.E > scores.I ? "내향성 (I)" : "외향성 (E)",
+                  recessiveScore: scores.E > scores.I ? scores.I : scores.E,
+                  color: "from-primary to-secondary"
+                },
+                {
+                  key: "SN",
+                  dominant: scores.S > scores.N ? "S" : "N", 
+                  dominantLabel: scores.S > scores.N ? "감각 (S)" : "직관 (N)",
+                  dominantScore: scores.S > scores.N ? scores.S : scores.N,
+                  recessive: scores.S > scores.N ? "N" : "S",
+                  recessiveLabel: scores.S > scores.N ? "직관 (N)" : "감각 (S)",
+                  recessiveScore: scores.S > scores.N ? scores.N : scores.S,
+                  color: "from-secondary to-primary"
+                },
+                {
+                  key: "TF",
+                  dominant: scores.T > scores.F ? "T" : "F",
+                  dominantLabel: scores.T > scores.F ? "사고 (T)" : "감정 (F)", 
+                  dominantScore: scores.T > scores.F ? scores.T : scores.F,
+                  recessive: scores.T > scores.F ? "F" : "T",
+                  recessiveLabel: scores.T > scores.F ? "감정 (F)" : "사고 (T)",
+                  recessiveScore: scores.T > scores.F ? scores.F : scores.T,
+                  color: "from-accent to-orange-400"
+                },
+                {
+                  key: "JP",
+                  dominant: scores.J > scores.P ? "J" : "P",
+                  dominantLabel: scores.J > scores.P ? "판단 (J)" : "인식 (P)",
+                  dominantScore: scores.J > scores.P ? scores.J : scores.P,
+                  recessive: scores.J > scores.P ? "P" : "J", 
+                  recessiveLabel: scores.J > scores.P ? "인식 (P)" : "판단 (J)",
+                  recessiveScore: scores.J > scores.P ? scores.P : scores.J,
+                  color: "from-purple-600 to-purple-400"
+                }
+              ].map((dimension) => (
+                <Card key={dimension.key} className="p-6">
+                  <CardContent className="pt-0">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-dark">{dimension.dominantLabel}</h3>
+                      <span className="text-2xl font-bold text-primary">
+                        {Math.round(dimension.dominantScore)}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
+                      <div
+                        className={`bg-gradient-to-r ${dimension.color} h-3 rounded-full transition-all duration-1000`}
+                        style={{ width: `${dimension.dominantScore}%` }}
+                      />
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      vs {dimension.recessiveLabel} {Math.round(dimension.recessiveScore)}%
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Detailed Analysis */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <Card className="p-8">
+                <CardContent className="pt-0">
+                  <div className="flex items-center mb-6">
+                    <div className="w-10 h-10 bg-secondary/20 rounded-full flex items-center justify-center mr-4">
+                      <Star className="w-5 h-5 text-secondary" />
+                    </div>
+                    <h3 className="text-xl font-bold text-dark">주요 강점</h3>
+                  </div>
+                  <ul className="space-y-3" data-testid="list-strengths">
+                    {personalityInfo.strengths.map((strength, index) => (
+                      <li key={index} className="flex items-start">
+                        <div className="w-2 h-2 bg-secondary rounded-full mt-2 mr-3 flex-shrink-0" />
+                        <span className="text-gray-700">{strength}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="p-8">
+                <CardContent className="pt-0">
+                  <div className="flex items-center mb-6">
+                    <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center mr-4">
+                      <AlertTriangle className="w-5 h-5 text-accent" />
+                    </div>
+                    <h3 className="text-xl font-bold text-dark">개선 포인트</h3>
+                  </div>
+                  <ul className="space-y-3" data-testid="list-weaknesses">
+                    {personalityInfo.weaknesses.map((weakness, index) => (
+                      <li key={index} className="flex items-start">
+                        <div className="w-2 h-2 bg-accent rounded-full mt-2 mr-3 flex-shrink-0" />
+                        <span className="text-gray-700">{weakness}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Career Suggestions */}
+            <Card className="p-8">
+              <CardContent className="pt-0">
+                <div className="flex items-center mb-6">
+                  <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center mr-4">
+                    <Briefcase className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold text-dark">추천 직업</h3>
+                </div>
+                <div className="grid md:grid-cols-3 gap-4" data-testid="grid-careers">
+                  {personalityInfo.careers.map((career, index) => (
+                    <div key={index} className="bg-gray-50 rounded-lg p-4 text-center">
+                      <div className="text-2xl mb-2">{career.icon}</div>
+                      <p className="font-medium text-dark">{career.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Action Buttons */}
+            <Card className="p-6">
+              <CardContent className="pt-0">
+                {/* Top Row - 3 Buttons */}
                 <div className="flex flex-wrap justify-center gap-3 mb-4">
                   <Button
                     onClick={() => setShowResultModal(true)}
@@ -762,7 +1016,7 @@ export default function MBTITest() {
                   </Button>
                 </div>
 
-                {/* Restart Button - Bottom Center */}
+                {/* Bottom Row - Restart Button */}
                 <div className="flex justify-center">
                   <Button
                     onClick={restartTest}
@@ -942,125 +1196,7 @@ export default function MBTITest() {
                   </div>
                 </div>
               </div>
-            )}
-
-            {/* Personality Dimensions */}
-            <div className="grid md:grid-cols-2 gap-6">
-              {[
-                { 
-                  key: "EI", 
-                  dominant: scores.E > scores.I ? "E" : "I",
-                  dominantLabel: scores.E > scores.I ? "외향성 (E)" : "내향성 (I)",
-                  dominantScore: scores.E > scores.I ? scores.E : scores.I,
-                  recessive: scores.E > scores.I ? "I" : "E",
-                  recessiveLabel: scores.E > scores.I ? "내향성 (I)" : "외향성 (E)",
-                  recessiveScore: scores.E > scores.I ? scores.I : scores.E,
-                  color: "from-primary to-secondary"
-                },
-                {
-                  key: "SN",
-                  dominant: scores.S > scores.N ? "S" : "N", 
-                  dominantLabel: scores.S > scores.N ? "감각 (S)" : "직관 (N)",
-                  dominantScore: scores.S > scores.N ? scores.S : scores.N,
-                  recessive: scores.S > scores.N ? "N" : "S",
-                  recessiveLabel: scores.S > scores.N ? "직관 (N)" : "감각 (S)",
-                  recessiveScore: scores.S > scores.N ? scores.N : scores.S,
-                  color: "from-secondary to-primary"
-                },
-                {
-                  key: "TF",
-                  dominant: scores.T > scores.F ? "T" : "F",
-                  dominantLabel: scores.T > scores.F ? "사고 (T)" : "감정 (F)", 
-                  dominantScore: scores.T > scores.F ? scores.T : scores.F,
-                  recessive: scores.T > scores.F ? "F" : "T",
-                  recessiveLabel: scores.T > scores.F ? "감정 (F)" : "사고 (T)",
-                  recessiveScore: scores.T > scores.F ? scores.F : scores.T,
-                  color: "from-accent to-orange-400"
-                },
-                {
-                  key: "JP",
-                  dominant: scores.J > scores.P ? "J" : "P",
-                  dominantLabel: scores.J > scores.P ? "판단 (J)" : "인식 (P)",
-                  dominantScore: scores.J > scores.P ? scores.J : scores.P,
-                  recessive: scores.J > scores.P ? "P" : "J", 
-                  recessiveLabel: scores.J > scores.P ? "인식 (P)" : "판단 (J)",
-                  recessiveScore: scores.J > scores.P ? scores.P : scores.J,
-                  color: "from-purple-600 to-purple-400"
-                }
-              ].map((dimension) => (
-                <Card key={dimension.key} className="p-6">
-                  <CardContent className="pt-0">
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="font-semibold text-dark">{dimension.dominantLabel}</h3>
-                      <span className="text-2xl font-bold text-primary">
-                        {Math.round(dimension.dominantScore)}%
-                      </span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3 mb-2">
-                      <div
-                        className={`bg-gradient-to-r ${dimension.color} h-3 rounded-full transition-all duration-1000`}
-                        style={{ width: `${dimension.dominantScore}%` }}
-                      />
-                    </div>
-                    <p className="text-sm text-gray-600">
-                      vs {dimension.recessiveLabel} {Math.round(dimension.recessiveScore)}%
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {/* Detailed Analysis */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <Card className="p-8">
-                <CardContent className="pt-0">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 bg-secondary/20 rounded-full flex items-center justify-center mr-4">
-                      <Star className="w-5 h-5 text-secondary" />
-                    </div>
-                    <h3 className="text-xl font-bold text-dark">주요 강점</h3>
-                  </div>
-                  <ul className="space-y-3" data-testid="list-strengths">
-                    {personalityInfo.strengths.map((strength, index) => (
-                      <li key={index} className="flex items-start">
-                        <div className="w-2 h-2 bg-secondary rounded-full mt-2 mr-3 flex-shrink-0" />
-                        <span className="text-gray-700">{strength}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="p-8">
-                <CardContent className="pt-0">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 bg-accent/20 rounded-full flex items-center justify-center mr-4">
-                      <AlertTriangle className="w-5 h-5 text-accent" />
-                    </div>
-                    <h3 className="text-xl font-bold text-dark">개선 포인트</h3>
-                  </div>
-                  <ul className="space-y-3" data-testid="list-weaknesses">
-                    {personalityInfo.weaknesses.map((weakness, index) => (
-                      <li key={index} className="flex items-start">
-                        <div className="w-2 h-2 bg-accent rounded-full mt-2 mr-3 flex-shrink-0" />
-                        <span className="text-gray-700">{weakness}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Career Suggestions */}
-            <Card className="p-8">
-              <CardContent className="pt-0">
-                <div className="flex items-center mb-6">
-                  <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center mr-4">
-                    <Briefcase className="w-5 h-5 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold text-dark">추천 직업</h3>
-                </div>
-                <div className="grid md:grid-cols-3 gap-4" data-testid="grid-careers">
+            )}-testid="grid-careers">
                   {personalityInfo.careers.map((career, index) => (
                     <div key={index} className="bg-gray-50 rounded-lg p-4 text-center">
                       <div className="text-2xl mb-2">{career.icon}</div>
@@ -1070,6 +1206,9 @@ export default function MBTITest() {
                 </div>
               </CardContent>
             </Card>
+
+              </div>
+            )}
 
             {/* Compatibility Section */}
             <Card className="p-8">
