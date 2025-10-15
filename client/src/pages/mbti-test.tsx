@@ -1177,19 +1177,6 @@ export default function MBTITest() {
               <p>MBTI 테스트 | 성격유형검사 | 심리테스트 | 16personalities | 무료 성격분석 | 직업적성검사</p>
             </div>
             
-            {/* Source and Credibility Information */}
-            <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left max-w-2xl mx-auto">
-              <h4 className="text-sm font-semibold text-gray-700 mb-3">{t('source.title')}</h4>
-              <div className="space-y-1 text-xs text-gray-600">
-                <p>• {t('source.mbti')}</p>
-                <p>• {t('source.jung')}</p>
-                <p>• {t('source.foundation')}</p>
-              </div>
-              <div className="mt-3 p-2 bg-blue-50 rounded border-l-2 border-blue-300">
-                <p className="text-xs text-blue-800">{t('source.disclaimer')}</p>
-              </div>
-            </div>
-            
             {/* 추가 링크 */}
             <div className="flex justify-center space-x-6 text-sm">
               <span className="hover:text-primary cursor-pointer">개인정보처리방침</span>
@@ -1200,6 +1187,7 @@ export default function MBTITest() {
             <div className="border-t border-gray-200 pt-4">
               <p className="text-sm">© 2024 MBTI 심리테스트. All rights reserved.</p>
               <p className="text-xs mt-2">정확도 95% 이상의 과학적 성격분석 | 15만+ 사용자 검증완료</p>
+              <p className="text-sm mt-3">📧 문의: Mina's Lab (saeyoung2016@gmail.com)</p>
             </div>
           </div>
         </div>
