@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PersonalityType } from "@/data/personality-types";
-import { BarChart3, Users, Heart, Download, Zap } from "lucide-react";
+import { BarChart3, Users, Heart, Zap } from "lucide-react";
 
 interface PersonalityScores {
   E: number;
@@ -73,29 +73,6 @@ export function ResultsAnalytics({ personalityType, personalityInfo, scores }: R
   
   const compatibility = compatibilityMatrix[personalityType] || { best: [], good: [], challenging: [] };
   const celebrities = celebPersonalities[personalityType] || [];
-
-  const downloadResults = () => {
-    const results = {
-      personalityType,
-      title: personalityInfo.title,
-      subtitle: personalityInfo.subtitle,
-      description: personalityInfo.description,
-      scores,
-      strengths: personalityInfo.strengths,
-      weaknesses: personalityInfo.weaknesses,
-      careers: personalityInfo.careers,
-      testDate: new Date().toISOString()
-    };
-    
-    const dataStr = JSON.stringify(results, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `mbti-result-${personalityType}-${new Date().toISOString().split('T')[0]}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <div className="space-y-6">
@@ -208,43 +185,68 @@ export function ResultsAnalytics({ personalityType, personalityInfo, scores }: R
         </CardContent>
       </Card>
 
-      {/* 추가 기능들 */}
-      <div className="flex flex-wrap gap-4">
-        <Button onClick={downloadResults} variant="outline" className="flex items-center space-x-2">
-          <Download className="w-4 h-4" />
-          <span>결과 다운로드</span>
-        </Button>
-        
+      {/* 상세 분석 버튼 - 노란색, 큰 사이즈 */}
+      <div className="flex justify-center">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline">상세 분석 보기</Button>
+            <Button 
+              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold px-8 py-6 text-lg rounded-xl shadow-lg"
+            >
+              📊 상세 분석 보기
+            </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{personalityType} 상세 분석</DialogTitle>
+              <DialogTitle className="text-2xl">{personalityType} 상세 분석</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <h4 className="font-semibold mb-2">성격 특성 점수</h4>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>외향성: {Math.round(scores.E)}%</div>
-                  <div>내향성: {Math.round(scores.I)}%</div>
-                  <div>감각: {Math.round(scores.S)}%</div>
-                  <div>직관: {Math.round(scores.N)}%</div>
-                  <div>사고: {Math.round(scores.T)}%</div>
-                  <div>감정: {Math.round(scores.F)}%</div>
-                  <div>판단: {Math.round(scores.J)}%</div>
-                  <div>인식: {Math.round(scores.P)}%</div>
+                <h4 className="font-semibold text-lg mb-3">성격 특성 점수</h4>
+                <div className="grid grid-cols-2 gap-4 text-base">
+                  <div className="bg-blue-50 p-3 rounded">
+                    <span className="font-medium">외향성 (E):</span> {Math.round(scores.E)}%
+                  </div>
+                  <div className="bg-purple-50 p-3 rounded">
+                    <span className="font-medium">내향성 (I):</span> {Math.round(scores.I)}%
+                  </div>
+                  <div className="bg-green-50 p-3 rounded">
+                    <span className="font-medium">감각 (S):</span> {Math.round(scores.S)}%
+                  </div>
+                  <div className="bg-yellow-50 p-3 rounded">
+                    <span className="font-medium">직관 (N):</span> {Math.round(scores.N)}%
+                  </div>
+                  <div className="bg-red-50 p-3 rounded">
+                    <span className="font-medium">사고 (T):</span> {Math.round(scores.T)}%
+                  </div>
+                  <div className="bg-pink-50 p-3 rounded">
+                    <span className="font-medium">감정 (F):</span> {Math.round(scores.F)}%
+                  </div>
+                  <div className="bg-indigo-50 p-3 rounded">
+                    <span className="font-medium">판단 (J):</span> {Math.round(scores.J)}%
+                  </div>
+                  <div className="bg-orange-50 p-3 rounded">
+                    <span className="font-medium">인식 (P):</span> {Math.round(scores.P)}%
+                  </div>
                 </div>
               </div>
               
-              <div>
-                <h4 className="font-semibold mb-2">개발 제안</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
+              <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+                <h4 className="font-semibold text-lg mb-3">💡 성장을 위한 조언</h4>
+                <ul className="list-disc list-inside space-y-2 text-gray-700">
                   <li>약점을 보완하기 위한 구체적인 방법들을 연습해보세요</li>
                   <li>다른 성격 유형과의 소통 방식을 이해해보세요</li>
                   <li>자신의 강점을 더욱 발전시킬 수 있는 활동을 찾아보세요</li>
+                  <li>정기적으로 자기 성찰의 시간을 가지세요</li>
                 </ul>
+              </div>
+
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h4 className="font-semibold text-lg mb-3">📈 발전 방향</h4>
+                <div className="space-y-2 text-gray-700">
+                  <p>• <strong>단기 목표:</strong> 자신의 약점 1가지를 선택해 30일 챌린지 시작하기</p>
+                  <p>• <strong>중기 목표:</strong> 다양한 성격 유형의 사람들과 교류하며 소통 능력 향상하기</p>
+                  <p>• <strong>장기 목표:</strong> 자신의 강점을 활용한 커리어 발전 계획 수립하기</p>
+                </div>
               </div>
             </div>
           </DialogContent>
