@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { questions } from "@/data/questions";
 import { personalityTypes } from "@/data/personality-types";
-import { multiLanguageQuestions, getLocalizedQuestion } from "@/data/questions-i18n";
+import { localizedQuestions } from "@/data/questions-i18n";
 import { getLocalizedPersonalityType } from "@/data/personality-types-i18n";
 import { calculateMBTI } from "@/lib/mbti-calculator";
 import { LanguageSelector } from "@/components/LanguageSelector";
@@ -46,7 +46,7 @@ export default function MBTITest() {
   const analytics = useAnalytics();
 
   const localizedQuestions = useMemo(() => 
-    multiLanguageQuestions.map(q => getLocalizedQuestion(q, language)), 
+    localizedQuestions.map(q => getLocalizedQuestion(q, language)), 
     [language]
   );
   const totalQuestions = localizedQuestions.length;
